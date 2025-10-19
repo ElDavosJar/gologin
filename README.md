@@ -1,8 +1,8 @@
 # gologin 🔐
 
-**Autenticación JWT completa para Go**
+**Librería de autenticación JWT embeddable para Go**
 
-Librería de autenticación con JWT tokens, rate limiting, token blacklist y multi-tenancy. Production-ready.
+Sistema de autenticación completo con JWT tokens, rate limiting, token blacklist y arquitectura embeddable. Production-ready.
 
 ## 🚀 Instalación
 
@@ -27,9 +27,9 @@ go get github.com/ElDavosJar/gologin@v0.9.0
 - **Username sanitización** y validación
 - **Protección contra timing attacks**
 
-### ✅ **Arquitectura Flexible**
+### ✅ **Arquitectura Embeddable**
 - **Agnóstico de BD**: PostgreSQL, MySQL, MongoDB, DynamoDB, etc.
-- **Multi-tenant**: OwnerID/OwnerType para cualquier dominio
+- **Embeddable**: Struct User para embeber en tus entidades de dominio
 - **Configurable**: Rate limiting, expiración de tokens, etc.
 - **Test-friendly**: Interfaces y mocks incluidos
 
@@ -57,7 +57,7 @@ authService := gologin.NewAuthService(tuRepo, "tu-jwt-secret-32-chars-minimo")
 - **Básica**: Solo autenticación JWT
 - **Con Mapeo**: Para bases de datos legacy
 - **Completa**: Con rate limiting y token blacklist
-- **Multi-tenant**: OwnerID/OwnerType nativo
+- **Embeddable**: User struct para embeber en tus entidades
 
 ### Interfaces a Implementar
 
@@ -108,13 +108,22 @@ cd examples && go run full_app_example.go
 ## 🏗️ Arquitectura
 
 ### Componentes Principales
-- **`User`**: Credenciales con OwnerID/OwnerType para multi-tenancy
+- **`User`**: Struct embeddable con credenciales básicas
 - **`AuthService`**: API principal de autenticación
 - **`UserRepository`**: Interfaz para persistencia (requerida)
 - **`JWTService`**: Manejo interno de tokens JWT
 
-### Multi-Tenancy Nativo
-Cada usuario pertenece a una entidad específica (gym, company, customer, etc.)
+### Diseño Embeddable
+La struct `User` está diseñada para ser embebida en tus entidades de dominio:
+
+```go
+type BusinessUser struct {
+    gologin.User  // Embed the User struct
+    Email         string
+    Role          string
+    CompanyID     string
+}
+```
 
 ## 🔒 Seguridad
 - Bcrypt hashing con cost configurable

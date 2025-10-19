@@ -95,7 +95,7 @@ func NewAuthServiceWithOptionsAndMapping(repo UserRepository, jwtSecret string, 
 	}
 }
 
-// RegisterUser creates a new user with credentials for a domain entity
+// RegisterUser creates a new user with credentials
 func (a *DefaultAuthService) RegisterUser(ownerType, ownerID, username, password string) (*User, error) {
 	// Rate limiting check (use username as identifier to prevent spam)
 	if a.registerLimiter != nil && !a.registerLimiter.Allow(username) {
@@ -103,12 +103,6 @@ func (a *DefaultAuthService) RegisterUser(ownerType, ownerID, username, password
 	}
 
 	// Validate input
-	if ownerType == "" {
-		return nil, fmt.Errorf("ownerType cannot be empty")
-	}
-	if ownerID == "" {
-		return nil, fmt.Errorf("ownerID cannot be empty")
-	}
 	if username == "" {
 		return nil, fmt.Errorf("username cannot be empty")
 	}
@@ -134,8 +128,6 @@ func (a *DefaultAuthService) RegisterUser(ownerType, ownerID, username, password
 	// Create the user
 	user := &User{
 		ID:           nil, // Will be set by repository
-		OwnerID:      ownerID,
-		OwnerType:    ownerType,
 		Username:     username,
 		PasswordHash: passwordHash,
 		CreatedAt:    time.Now(),

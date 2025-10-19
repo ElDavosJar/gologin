@@ -67,8 +67,6 @@ func (j *JWTService) generateAccessToken(user *User) (string, error) {
 	
 	claims := &Claims{
 		UserID:    *user.ID,
-		OwnerID:   user.OwnerID,
-		OwnerType: user.OwnerType,
 		Username:  user.Username,
 		TokenType: "access",
 		TokenID:   tokenID,
@@ -89,8 +87,6 @@ func (j *JWTService) generateRefreshToken(user *User) (string, error) {
 	
 	claims := &Claims{
 		UserID:    *user.ID,
-		OwnerID:   user.OwnerID,
-		OwnerType: user.OwnerType,
 		Username:  user.Username,
 		TokenType: "refresh",
 		TokenID:   tokenID,
@@ -136,7 +132,7 @@ func (j *JWTService) ValidateToken(tokenString string) (*Claims, error) {
 		}
 		
 		// Validate required claims
-		if claims.UserID == "" || claims.OwnerID == "" || claims.OwnerType == "" || claims.Username == "" {
+		if claims.UserID == "" || claims.Username == "" {
 			return nil, fmt.Errorf("invalid token: missing required claims")
 		}
 		
@@ -163,10 +159,8 @@ func (j *JWTService) RefreshAccessToken(refreshToken string) (*AuthResponse, err
 
 	// Create a dummy user object for token generation
 	user := &User{
-		ID:        &claims.UserID,
-		OwnerID:   claims.OwnerID,
-		OwnerType: claims.OwnerType,
-		Username:  claims.Username,
+		ID:       &claims.UserID,
+		Username: claims.Username,
 	}
 
 	return j.GenerateTokenPair(user)

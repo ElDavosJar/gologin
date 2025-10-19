@@ -16,7 +16,7 @@
 ### 🔧 Características Técnicas
 
 - **Idiomatic Go**: Structs con métodos, interfaces para DI
-- **Flexibilidad**: OwnerID/OwnerType para cualquier dominio
+- **Embeddable**: User struct diseñada para embeberse en entidades de dominio
 - **Configurable**: Múltiples opciones de almacenamiento y seguridad
 - **Testeable**: Cobertura completa de tests unitarios
 - **Documentado**: README, ejemplos y guías completas
@@ -78,13 +78,13 @@ Esta versión beta significa:
 ## 🔧 Guía de Instalación
 
 ```bash
-go get github.com/davos/gologin@v0.1.0-beta
+go get github.com/ElDavosJar/gologin@v0.9.0
 ```
 
 ### Uso Básico
 
 ```go
-import "github.com/davos/gologin"
+import "github.com/ElDavosJar/gologin"
 
 // Crear servicio básico
 authService := gologin.NewAuthService(repo, jwtSecret)
@@ -157,4 +157,4 @@ Esta versión beta se distribuye bajo la **MIT License**. Ver `LICENSE` para det
 
 **¡Tu feedback es oro!** Cada bug report, sugerencia o pregunta nos ayuda a hacer gologin mejor. No dudes en contactarnos. 🚀
 
-*Equipo gologin - `v0.1.0-beta`*
+*Equipo gologin - `v0.9.0-beta`*

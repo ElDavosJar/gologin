@@ -1,4 +1,4 @@
-# 🧪 Guía de Testing - gologin v0.9.0
+# 🧪 Guía de Testing Beta - gologin v0.9.0-beta
 
 
 ## 📋 Lista de Verificación de Testing

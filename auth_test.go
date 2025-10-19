@@ -77,13 +77,7 @@ func TestRegisterUser(t *testing.T) {
 		t.Fatal("Expected user ID to be set")
 	}
 
-	if user.OwnerID != "profile-123" {
-		t.Errorf("Expected OwnerID 'profile-123', got '%s'", user.OwnerID)
-	}
-
-	if user.OwnerType != "business_profile" {
-		t.Errorf("Expected OwnerType 'business_profile', got '%s'", user.OwnerType)
-	}
+	// User is now embeddable, no OwnerID/OwnerType in struct
 
 	if user.Username != "testuser" {
 		t.Errorf("Expected Username 'testuser', got '%s'", user.Username)
@@ -106,8 +100,6 @@ func TestRegisterUserValidation(t *testing.T) {
 		password    string
 		expectError bool
 	}{
-		{"empty ownerType", "", "profile-123", "user", "pass", true},
-		{"empty ownerID", "business", "", "user", "pass", true},
 		{"empty username", "business", "profile-123", "", "pass", true},
 		{"username too short", "business", "profile-123", "ab", "pass", true},
 		{"username too long", "business", "profile-123", string(make([]byte, 51)), "pass", true},
@@ -295,8 +287,6 @@ func TestPasswordHashing(t *testing.T) {
 func TestUserIsValid(t *testing.T) {
 	validUser := &User{
 		ID:           stringPtr("user-123"),
-		OwnerID:      "profile-123",
-		OwnerType:    "business_profile",
 		Username:     "testuser",
 		PasswordHash: "hashedpassword",
 		CreatedAt:    time.Now(),
@@ -307,11 +297,9 @@ func TestUserIsValid(t *testing.T) {
 	}
 
 	invalidUsers := []*User{
-		{OwnerID: "", OwnerType: "business", Username: "user", PasswordHash: "hash"}, // empty OwnerID
-		{OwnerID: "profile", OwnerType: "", Username: "user", PasswordHash: "hash"},  // empty OwnerType
-		{OwnerID: "profile", OwnerType: "business", Username: "", PasswordHash: "hash"}, // empty Username
-		{OwnerID: "profile", OwnerType: "business", Username: "ab", PasswordHash: "hash"}, // username too short
-		{OwnerID: "profile", OwnerType: "business", Username: "user", PasswordHash: ""},   // empty PasswordHash
+		{Username: "", PasswordHash: "hash"}, // empty Username
+		{Username: "ab", PasswordHash: "hash"}, // username too short
+		{Username: "user", PasswordHash: ""},   // empty PasswordHash
 	}
 
 	for i, user := range invalidUsers {
@@ -334,8 +322,6 @@ func TestBusinessUserEmbedding(t *testing.T) {
 	// Crear y registrar un usuario de negocio
 	bizUser := &BusinessUser{
 		User: User{
-			OwnerID:      "profile-999",
-			OwnerType:    "business_profile",
 			Username:     "bizuser",
 			PasswordHash: "",
 			CreatedAt:    time.Now(),
@@ -344,8 +330,8 @@ func TestBusinessUserEmbedding(t *testing.T) {
 		Role:  "admin",
 	}
 
-	// Registrar usando AuthService
-	user, err := authService.RegisterUser(bizUser.OwnerType, bizUser.OwnerID, bizUser.Username, "Password123")
+	// Registrar usando AuthService (sin OwnerID/OwnerType ya que es embeddable)
+	user, err := authService.RegisterUser("business_profile", "profile-999", bizUser.Username, "Password123")
 	if err != nil {
 		t.Fatalf("Failed to register embedded business user: %v", err)
 	}

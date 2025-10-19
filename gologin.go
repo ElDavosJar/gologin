@@ -41,13 +41,10 @@ func DefaultFieldMapping() *FieldMapping {
 	}
 }
 
-// User represents authentication credentials that belong to a domain entity.
-// The OwnerID and OwnerType fields allow the credentials to be associated with
-// any entity in your application domain.
+// User represents authentication credentials.
+// Embed this struct in your domain entities to add authentication capabilities.
 type User struct {
 	ID           *string    // nil until saved to storage
-	OwnerID      string     // ID of the entity that owns these credentials
-	OwnerType    string     // Type of owner ("business_profile", "customer", etc.)
 	Username     string     // Unique username for login
 	PasswordHash string     // bcrypt hash of the password
 	CreatedAt    time.Time  // When the user was created
@@ -55,8 +52,7 @@ type User struct {
 
 // IsValid checks if the user has valid data according to business rules
 func (u *User) IsValid() bool {
-	return u.OwnerID != "" && u.OwnerType != "" &&
-		   u.Username != "" && u.PasswordHash != "" &&
+	return u.Username != "" && u.PasswordHash != "" &&
 		   len(u.Username) >= 3 && len(u.Username) <= 50
 }
 
@@ -76,8 +72,6 @@ type AuthResponse struct {
 // Claims represents the JWT payload
 type Claims struct {
 	UserID    string `json:"user_id"`
-	OwnerID   string `json:"owner_id"`
-	OwnerType string `json:"owner_type"`
 	Username  string `json:"username"`
 	TokenType string `json:"token_type"` // "access" or "refresh"
 	TokenID   string `json:"jti"`        // JWT ID for blacklisting
