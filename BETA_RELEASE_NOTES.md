@@ -1,10 +1,7 @@
-# 📦 gologin v0.1.0-beta - Release Notes
+# 📦 gologin v0.9.0 - Release Notes
 
-## 🎉 ¡Lanzamiento de Beta!
 
-Después de semanas de desarrollo intenso, estamos emocionados de lanzar la **primera versión beta** de gologin. Esta versión incluye todas las funcionalidades principales de autenticación y está lista para testing real.
-
-## ✨ Novedades en v0.1.0-beta
+## ✨ Novedades en v0.9.0
 
 ### 🚀 Funcionalidades Principales
 

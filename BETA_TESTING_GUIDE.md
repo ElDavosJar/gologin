@@ -1,8 +1,5 @@
-# 🧪 Guía de Testing Beta - gologin v0.1.0-beta
+# 🧪 Guía de Testing - gologin v0.9.0
 
-## 🎯 Resumen Ejecutivo
-
-¡Felicidades! Has recibido la versión beta de **gologin**, una librería de autenticación completa para Go. Esta guía te ayudará a probar todas las funcionalidades y validar que cumple con tus necesidades.
 
 ## 📋 Lista de Verificación de Testing
 
@@ -27,6 +24,10 @@
 - [ ] **Test con Redis**: Rate limiting y blacklist distribuidos
 - [ ] **Test de Rendimiento**: Cargar con muchos usuarios/tokens
 - [ ] **Test de Seguridad Avanzado**: Análisis de vulnerabilidades
+
+### ✅ Tests de Seguridad (Importante)
+
+- [ ] **Intentar romper la seguridad**: Probar inyecciones, tokens manipulados, etc.
 
 ## 🚀 Inicio Rápido (5 minutos)
 
